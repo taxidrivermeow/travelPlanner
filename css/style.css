@@ -1,0 +1,77 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: Roboto, sans-serif;
+}
+
+body {
+    padding-top: 20px;
+}
+
+h1 {
+    text-align: center;
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+}
+
+.input-form, .planned-travels {
+    width: 50%;
+}
+
+.input-form {
+    background-color: lightgray;
+    padding: 30px 40px;
+    border: 1px solid #b0b0b0;
+    border-radius: 20px;
+}
+
+.input-form input, .input-form select {
+    margin-bottom: 5px;
+}
+
+.input-form button {
+    width: 100%;
+    margin-top: 10px;
+}
+
+.planned-travels {
+    font-size: 20px;
+    margin: 0 20px;
+}
+
+.planned-travels .history-item {
+    background-color: #42b908;
+    border: 1px solid black;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 10px;
+}
+
+.planned-travels .history-item span {
+    font-weight: 500;
+}
+
+.planned-travels .expected-budget {
+    margin: 20px 0;
+}
+
+.planned-travels .title {
+    display: flex;
+    flex-direction: row;
+}
+
+.planned-travels .cities {
+    flex: 4;
+}
+
+.planned-travels .buttons {
+    justify-content: center;
+    flex: 1;
+}
+
+.planned-travels .buttons a {
+    margin: 0 3px;
+}
