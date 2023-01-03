@@ -15,77 +15,40 @@
 		<div class="input-form">
 			<div class="main-form">
 				<h2>New travel</h2>
-				<form action="">
-					<input type="text" class="form-control" placeholder="City" id="city" required>
-					<input type="text" class="form-control" placeholder="Country" id="Country" required>
-					<input type="text" class="form-control" placeholder="Budget" id="budget">
-					<h5>Date start</h5>
-					<input type="date" class="form-control" placeholder="Budget" id="date-start">
-					<h5>Date end</h5>
-					<input type="date" class="form-control" placeholder="Budget" id="date-end">
-					<h5>Persons</h5>
-					<select class="custom-select" id="persons">
-						<option selected disabled>Choose...</option>
-						<option value="1">1</option>
-						<option value="2">2</option>
-						<option value="3">3</option>
-						<option value="4">4</option>
-						<option value="5">5</option>
-						<option value="6">6</option>
-						<option value="7">>7</option>
-					</select>
-					<h5>Main transfer</h5>
-					<select class="custom-select" id="main-transfer">
-						<option selected disabled>Choose...</option>
-						<option value="Fly">Fly</option>
-						<option value="Railway">Railway</option>
-						<option value="Bus">Bus</option>
-						<option value="Private car">Private car</option>
-						<option value="Rent car">Rent car</option>
-						<option value="Taxi">Taxi</option>
-					</select>
-					<button type="submit" class="btn btn-success">Save travel</button>
-				</form>
+				<input type="text" class="form-control" placeholder="City" id="city" required>
+				<input type="text" class="form-control" placeholder="Country" id="country" required>
+				<input type="text" class="form-control" placeholder="Budget" id="budget">
+				<h5>Date start</h5>
+				<input type="date" class="form-control" id="date-start">
+				<h5>Date end</h5>
+				<input type="date" class="form-control" id="date-end">
+				<h5>Persons</h5>
+				<select class="custom-select" id="persons">
+					<option selected disabled>Choose...</option>
+					<option value="1">1</option>
+					<option value="2">2</option>
+					<option value="3">3</option>
+					<option value="4">4</option>
+					<option value="5">5</option>
+					<option value="6">6</option>
+					<option value="7">>7</option>
+				</select>
+				<h5>Main transfer</h5>
+				<select class="custom-select" id="main-transfer">
+					<option selected disabled>Choose...</option>
+					<option value="Fly">Fly</option>
+					<option value="Railway">Railway</option>
+					<option value="Bus">Bus</option>
+					<option value="Private car">Private car</option>
+					<option value="Rent car">Rent car</option>
+					<option value="Taxi">Taxi</option>
+				</select>
+				<button class="btn btn-success" id="submit-btn">Save travel</button>
 			</div>
 		</div>
 		<div class="planned-travels">
 			<h2>Travel history</h2>
-			<div class="history-item">
-				<div class="title">
-					<div class="cities">
-						<h4>From Haifa to Jerusalem</h4>
-					</div>
-					<div class="buttons">
-						<a href="#"><img src="images/pencil-square.svg" alt="Edit"></a>
-						<a href="#"><img src="images/x-circle.svg" alt="Delete"></a>
-						<a href="#"><img src="images/three-dots-vertical.svg" alt="Edit"></a>
-					</div>
-				</div>
-				<div class="expected-budget">
-					<span>Expected budget: 1000 ILS</span>
-				</div>
-				<div class="dates-persons-transfer">
-					<span>01.03.2023 - 04.03.2023 | 2 persons | Private car</span>
-				</div>
-			</div>
-			<div class="history-item">
-				<div class="title">
-					<div class="cities">
-						<h4>From Haifa to Jerusalem</h4>
-					</div>
-					<div class="buttons">
-						<a href="#"><img src="images/pencil-square.svg" alt="Edit"></a>
-						<a href="#"><img src="images/x-circle.svg" alt="Delete"></a>
-						<a href="#"><img src="images/three-dots-vertical.svg" alt="Edit"></a>
-					</div>
-				</div>
-				<div class="expected-budget">
-					<span>Expected budget: 1000 ILS</span>
-				</div>
-				<div class="dates-persons-transfer">
-					<span>01.03.2023 - 04.03.2023 | 2 persons | Private car</span>
-				</div>
-			</div>
+			<div id="items"></div>
 		</div>
 	</div>
 <script src="js/script.js"></script>
