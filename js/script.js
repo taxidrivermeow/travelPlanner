@@ -83,6 +83,10 @@
         localStorage.setItem("travels", JSON.stringify(data));
     }
 
+    function clearDatabase() {
+        localStorage.setItem("travels", "");
+    }
+
     travelForm.onsubmit = addRecord;
     itemsRender();
 })()

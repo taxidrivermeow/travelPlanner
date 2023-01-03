@@ -27,6 +27,8 @@ h1 {
     padding: 30px 40px;
     border: 1px solid #b0b0b0;
     border-radius: 20px;
+    position: sticky;
+    top: 20px;
 }
 
 .input-form input, .input-form select {
