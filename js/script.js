@@ -1,7 +1,4 @@
-(function (){
-    let database = [];
-
-    const submitBtn = document.getElementById('submit-btn');
+(function () {
     const city = document.getElementById('city');
     const country = document.getElementById('country');
     const budget = document.getElementById('budget');
@@ -10,10 +7,10 @@
     const persons = document.getElementById('persons');
     const mainTransfer = document.getElementById('main-transfer');
     const historyItems = document.getElementById('items');
+    const travelForm = document.getElementById('travel-form');
 
     const setItem = function (obj, index) {
-        const persons = (obj.persons == 1)?'person':'persons';
-
+        const persons = (obj.persons == 1) ? 'person' : 'persons';
         const itemHtml = `
         <div class="history-item">
             <div class="title">
@@ -37,49 +34,55 @@
         return itemHtml;
     }
 
+    const addDeleteOnClickListener = function (deleteButton) {
+        deleteButton.onclick = deleteElement;
+    }
+
+    const addRecord = function (event) {
+        event.preventDefault();
+        const data = getDatabase();
+        let newObj = {};
+        newObj.city = city.value;
+        newObj.country = country.value;
+        newObj.budget = budget.value;
+        newObj.dateStart = dateStart.value;
+        newObj.dateEnd = dateEnd.value;
+        newObj.persons = (persons.value === 'Choose...') ? '' : persons.value;
+        newObj.mainTransfer = (mainTransfer.value === 'Choose...') ? '' : mainTransfer.value;
+        data.unshift(newObj);
+        setDatabase(data);
+
+        this.reset();
+        itemsRender();
+    }
+
     function deleteElement() {
-        database.splice(Number(this.dataset.index), 1);
+        let data = getDatabase();
+        data.splice(Number(this.dataset.index), 1);
+        setDatabase(data);
+
         itemsRender();
     }
 
     function setDeleteButton() {
         const deleteButtons = document.querySelectorAll(".delete-btn");
-        deleteButtons.forEach(function (deleteButton) {
-            deleteButton.onclick = deleteElement;
-        });
+        deleteButtons.forEach(addDeleteOnClickListener);
     }
 
     function itemsRender() {
-        const items = database.map(setItem);
+        const items = getDatabase().map(setItem);
         historyItems.innerHTML = items.join('');
-        setDeleteButton()
+        setDeleteButton();
     }
 
-    const addRecord = function () {
-        let newObj = {};
-        if (city.value === "") {
-            alert('Enter city');
-            return
-        } else {
-            newObj.city = city.value;
-        }
-
-        if (country.value === "") {
-            alert('Enter country');
-            return
-        } else {
-            newObj.country = country.value;
-        }
-
-        newObj.budget = budget.value;
-        newObj.dateStart = dateStart.value;
-        newObj.dateEnd = dateEnd.value;
-        newObj.persons = persons.value;
-        newObj.mainTransfer = mainTransfer.value;
-        database.unshift(newObj);
-
-        itemsRender();
+    function getDatabase() {
+        return (localStorage.getItem('travels')) ? JSON.parse(localStorage.getItem('travels')) : [];
     }
 
-    submitBtn.onclick = addRecord;
+    function setDatabase(data) {
+        localStorage.setItem("travels", JSON.stringify(data));
+    }
+
+    travelForm.onsubmit = addRecord;
+    itemsRender();
 })()

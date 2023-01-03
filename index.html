@@ -14,36 +14,38 @@
 	<div class="container">
 		<div class="input-form">
 			<div class="main-form">
-				<h2>New travel</h2>
-				<input type="text" class="form-control" placeholder="City" id="city" required>
-				<input type="text" class="form-control" placeholder="Country" id="country" required>
-				<input type="text" class="form-control" placeholder="Budget" id="budget">
-				<h5>Date start</h5>
-				<input type="date" class="form-control" id="date-start">
-				<h5>Date end</h5>
-				<input type="date" class="form-control" id="date-end">
-				<h5>Persons</h5>
-				<select class="custom-select" id="persons">
-					<option selected disabled>Choose...</option>
-					<option value="1">1</option>
-					<option value="2">2</option>
-					<option value="3">3</option>
-					<option value="4">4</option>
-					<option value="5">5</option>
-					<option value="6">6</option>
-					<option value="7">>7</option>
-				</select>
-				<h5>Main transfer</h5>
-				<select class="custom-select" id="main-transfer">
-					<option selected disabled>Choose...</option>
-					<option value="Fly">Fly</option>
-					<option value="Railway">Railway</option>
-					<option value="Bus">Bus</option>
-					<option value="Private car">Private car</option>
-					<option value="Rent car">Rent car</option>
-					<option value="Taxi">Taxi</option>
-				</select>
-				<button class="btn btn-success" id="submit-btn">Save travel</button>
+				<form action="" id="travel-form">
+					<h2>New travel</h2>
+					<input type="text" class="form-control" placeholder="City" id="city" required>
+					<input type="text" class="form-control" placeholder="Country" id="country" required>
+					<input type="text" class="form-control" placeholder="Budget" id="budget">
+					<h5>Date start</h5>
+					<input type="date" class="form-control" id="date-start">
+					<h5>Date end</h5>
+					<input type="date" class="form-control" id="date-end">
+					<h5>Persons</h5>
+					<select class="custom-select" id="persons">
+						<option selected disabled>Choose...</option>
+						<option value="1">1</option>
+						<option value="2">2</option>
+						<option value="3">3</option>
+						<option value="4">4</option>
+						<option value="5">5</option>
+						<option value="6">6</option>
+						<option value="7">>7</option>
+					</select>
+					<h5>Main transfer</h5>
+					<select class="custom-select" id="main-transfer">
+						<option selected disabled>Choose...</option>
+						<option value="Fly">Fly</option>
+						<option value="Railway">Railway</option>
+						<option value="Bus">Bus</option>
+						<option value="Private car">Private car</option>
+						<option value="Rent car">Rent car</option>
+						<option value="Taxi">Taxi</option>
+					</select>
+					<button class="btn btn-success" id="submit-btn">Save travel</button>
+				</form>
 			</div>
 		</div>
 		<div class="planned-travels">
