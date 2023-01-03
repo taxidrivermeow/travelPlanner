@@ -8,10 +8,11 @@
     const mainTransfer = document.getElementById('main-transfer');
     const historyItems = document.getElementById('items');
     const travelForm = document.getElementById('travel-form');
+    const clearData = document.getElementById('clear-data');
 
     const setItem = function (obj, index) {
         const persons = (obj.persons == 1) ? 'person' : 'persons';
-        const itemHtml = `
+        return `
         <div class="history-item">
             <div class="title">
                 <div class="cities">
@@ -31,7 +32,6 @@
             </div>
         </div>
         `;
-        return itemHtml;
     }
 
     const addDeleteOnClickListener = function (deleteButton) {
@@ -85,8 +85,10 @@
 
     function clearDatabase() {
         localStorage.setItem("travels", "");
+        itemsRender();
     }
 
     travelForm.onsubmit = addRecord;
+    clearData.onclick = clearDatabase;
     itemsRender();
 })()
