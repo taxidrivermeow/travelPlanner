@@ -10,18 +10,27 @@
     const travelForm = document.getElementById('travel-form');
     const clearData = document.getElementById('clear-data');
 
+    const cityModal = document.getElementById('modal-city');
+    const countryModal = document.getElementById('modal-country');
+    const budgetModal = document.getElementById('modal-budget');
+    const dateStartModal = document.getElementById('modal-date-start');
+    const dateEndModal = document.getElementById('modal-date-end');
+    const personsModal = document.getElementById('modal-persons');
+    const mainTransferModal = document.getElementById('modal-main-transfer');
+    const editTravelForm = document.getElementById('edit-travel-form');
+
     const setItem = function (obj, index) {
         const persons = (obj.persons == 1) ? 'person' : 'persons';
         return `
         <div class="history-item">
             <div class="title">
                 <div class="cities">
-                    <h4>From Haifa to ${obj.city}</h4>
+                    <h4>From Haifa to ${obj.city}/${obj.country}</h4>
                 </div>
                 <div class="buttons">
-                    <a href="#"><img src="images/pencil-square.svg" alt="Edit"></a>
+                    <a href="#" class="edit-btn" data-index="${index}" data-toggle="modal" data-target="#travelModalLong"><img src="images/pencil-square.svg" alt="Edit"></a>
                     <a href="#" class="delete-btn" data-index="${index}"><img src="images/x-circle.svg" alt="Delete"></a>
-                    <a href="#"><img src="images/three-dots-vertical.svg" alt="Edit"></a>
+                    <a href="#"><img src="images/three-dots-vertical.svg" alt="Details"></a>
                 </div>
             </div>
             <div class="expected-budget">
@@ -32,10 +41,6 @@
             </div>
         </div>
         `;
-    }
-
-    const addDeleteOnClickListener = function (deleteButton) {
-        deleteButton.onclick = deleteElement;
     }
 
     const addRecord = function (event) {
@@ -64,15 +69,60 @@
         itemsRender();
     }
 
+    const addDeleteOnClickListener = function (deleteButton) {
+        deleteButton.onclick = deleteElement;
+    }
+
     function setDeleteButton() {
         const deleteButtons = document.querySelectorAll(".delete-btn");
         deleteButtons.forEach(addDeleteOnClickListener);
+    }
+
+    function saveChanges(event) {
+        event.preventDefault();
+        const index = editTravelForm.dataset.index;
+        const data = getDatabase();
+        data[index].city = cityModal.value;
+        data[index].country = countryModal.value;
+        data[index].budget = budgetModal.value;
+        data[index].dateStart = dateStartModal.value;
+        data[index].dateEnd = dateEndModal.value;
+        data[index].persons = (personsModal.value === 'Choose...') ? '' : personsModal.value;
+        data[index].mainTransfer = (mainTransferModal.value === 'Choose...') ? '' : mainTransferModal.value;
+
+        setDatabase(data);
+        itemsRender();
+        $('#travelModalLong').modal('hide');
+    }
+
+    function editElement() {
+        const index = this.dataset.index;
+        const data = getDatabase()[index];
+
+        cityModal.value = data.city;
+        countryModal.value = data.country;
+        budgetModal.value = data.budget;
+        dateStartModal.value = data.dateStart;
+        dateEndModal.value = data.dateEnd;
+        personsModal.value = (data.persons)?data.persons:'Choose...';
+        mainTransferModal.value = (data.mainTransfer)?data.mainTransfer:'Choose...';
+        editTravelForm.dataset.index = index;
+    }
+
+    const addEditOnClickListener = function (editButton) {
+        editButton.onclick = editElement;
+    }
+
+    function setEditButton() {
+        const editButtons = document.querySelectorAll(".edit-btn");
+        editButtons.forEach(addEditOnClickListener);
     }
 
     function itemsRender() {
         const items = getDatabase().map(setItem);
         historyItems.innerHTML = items.join('');
         setDeleteButton();
+        setEditButton();
     }
 
     function getDatabase() {
@@ -89,6 +139,7 @@
     }
 
     travelForm.onsubmit = addRecord;
+    editTravelForm.onsubmit = saveChanges;
     clearData.onclick = clearDatabase;
     itemsRender();
 })()
