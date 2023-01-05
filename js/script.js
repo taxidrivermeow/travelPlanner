@@ -18,6 +18,7 @@
     const personsModal = document.getElementById('modal-persons');
     const mainTransferModal = document.getElementById('modal-main-transfer');
     const editTravelForm = document.getElementById('edit-travel-form');
+    const modalDetailsDiv = document.getElementById('modal-details');
 
     const setItem = function (obj, index) {
         const persons = (obj.persons == 1) ? 'person' : 'persons';
@@ -28,9 +29,9 @@
                     <h4>From Haifa to ${obj.city}/${obj.country}</h4>
                 </div>
                 <div class="buttons">
-                    <a href="#" class="edit-btn" data-index="${index}" data-toggle="modal" data-target="#travelModalLong"><img src="images/pencil-square.svg" alt="Edit"></a>
-                    <a href="#" class="delete-btn" data-index="${index}"><img src="images/x-circle.svg" alt="Delete"></a>
-                    <a href="#"><img src="images/three-dots-vertical.svg" alt="Details"></a>
+                    <a href="#" class="edit-btn" data-index="${index}" data-toggle="modal" data-target="#travelModalLong" title="Edit"><img src="images/pencil-square.svg" alt="Edit"></a>
+                    <a href="#" class="delete-btn" data-index="${index}" title="Delete"><img src="images/x-circle.svg" alt="Delete"></a>
+                    <a href="#" class="details-btn" data-index="${index}" data-toggle="modal" data-target="#detailsModal" title="Details"><img src="images/three-dots-vertical.svg" alt="Details"></a>
                 </div>
             </div>
             <div class="expected-budget">
@@ -78,10 +79,23 @@
         deleteButtons.forEach(addDeleteOnClickListener);
     }
 
+    function currentDate() {
+        const currentDate = new Date();
+        const year = currentDate.getFullYear()
+        const month = ((currentDate.getMonth() + 1) < 10)?'0' + (currentDate.getMonth() + 1):(currentDate.getMonth() + 1);
+        const date = (currentDate.getDate() < 10)?'0' + currentDate.getDate():currentDate.getDate();
+        const hours = (currentDate.getHours() < 10)?'0' + currentDate.getHours():currentDate.getHours();
+        const minutes = (currentDate.getMinutes() < 10)?'0' + currentDate.getMinutes():currentDate.getMinutes();
+        const seconds = (currentDate.getSeconds() < 10)?'0' + currentDate.getSeconds():currentDate.getSeconds();
+        return `${year}-${month}-${date} ${hours}:${minutes}:${seconds}`;
+    }
+
     function saveChanges(event) {
         event.preventDefault();
         const index = editTravelForm.dataset.index;
         const data = getDatabase();
+        const date = currentDate();
+
         data[index].city = cityModal.value;
         data[index].country = countryModal.value;
         data[index].budget = budgetModal.value;
@@ -89,6 +103,11 @@
         data[index].dateEnd = dateEndModal.value;
         data[index].persons = (personsModal.value === 'Choose...') ? '' : personsModal.value;
         data[index].mainTransfer = (mainTransferModal.value === 'Choose...') ? '' : mainTransferModal.value;
+        if (data[index].changeLog) {
+            data[index].changeLog.push(date)
+        } else {
+            data[index].changeLog = [date];
+        }
 
         setDatabase(data);
         itemsRender();
@@ -117,12 +136,48 @@
         const editButtons = document.querySelectorAll(".edit-btn");
         editButtons.forEach(addEditOnClickListener);
     }
+    
+    function detailsElement() {
+        const index = this.dataset.index;
+        const data = getDatabase()[index];
+        let changeLog = '';
+        const travelInfo = `
+        Country: ${data.country}<br>
+        City: ${data.city}<br>
+        Expected budget: ${data.budget}<br>
+        Date start: ${data.dateStart}<br>
+        Date end: ${data.dateEnd}<br>
+        Persons: ${data.persons}<br>
+        Main transfer: ${data.mainTransfer}<br>
+        `;
+
+        if (data.changeLog) {
+            changeLog = data.changeLog.map(function (value){
+                return `${value} <br>`;
+            }).join('');
+            changeLog = '<hr' + changeLog;
+            //TODO
+        }
+
+
+        modalDetailsDiv.innerHTML = travelInfo+changeLog;
+    }
+
+    const addDetailsOnClickListener = function (detailsButton) {
+        detailsButton.onclick = detailsElement;
+    }
+
+    function setDetailButton() {
+        const detailsButtons = document.querySelectorAll(".details-btn");
+        detailsButtons.forEach(addDetailsOnClickListener);
+    }
 
     function itemsRender() {
         const items = getDatabase().map(setItem);
         historyItems.innerHTML = items.join('');
         setDeleteButton();
         setEditButton();
+        setDetailButton();
     }
 
     function getDatabase() {
