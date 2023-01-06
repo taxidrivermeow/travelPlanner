@@ -95,19 +95,24 @@
         const index = editTravelForm.dataset.index;
         const data = getDatabase();
         const date = currentDate();
+        let newData = {...data[index]};
 
-        data[index].city = cityModal.value;
-        data[index].country = countryModal.value;
-        data[index].budget = budgetModal.value;
-        data[index].dateStart = dateStartModal.value;
-        data[index].dateEnd = dateEndModal.value;
-        data[index].persons = (personsModal.value === 'Choose...') ? '' : personsModal.value;
-        data[index].mainTransfer = (mainTransferModal.value === 'Choose...') ? '' : mainTransferModal.value;
-        if (data[index].changeLog) {
-            data[index].changeLog.push(date)
-        } else {
-            data[index].changeLog = [date];
+        newData.city = cityModal.value;
+        newData.country = countryModal.value;
+        newData.budget = budgetModal.value;
+        newData.dateStart = dateStartModal.value;
+        newData.dateEnd = dateEndModal.value;
+        newData.persons = (personsModal.value === 'Choose...') ? '' : personsModal.value;
+        newData.mainTransfer = (mainTransferModal.value === 'Choose...') ? '' : mainTransferModal.value;
+
+        if (JSON.stringify(newData) !== JSON.stringify(data[index])) {
+            if (data[index].changeLog) {
+                newData.changeLog.push(date)
+            } else {
+                newData.changeLog = [date];
+            }
         }
+        data[index] = newData;
 
         setDatabase(data);
         itemsRender();
@@ -155,7 +160,7 @@
             changeLog = data.changeLog.map(function (value){
                 return `${value} <br>`;
             }).join('');
-            changeLog = '<hr>' + changeLog;
+            changeLog = '<hr><h6>Changelog:</h6>' + changeLog;
         }
 
         modalDetailsDiv.innerHTML = travelInfo+changeLog;
