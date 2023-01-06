@@ -94,7 +94,7 @@
         event.preventDefault();
         const index = editTravelForm.dataset.index;
         const data = getDatabase();
-        const date = currentDate();
+        let date = currentDate();
         let newData = {...data[index]};
 
         newData.city = cityModal.value;
@@ -106,6 +106,16 @@
         newData.mainTransfer = (mainTransferModal.value === 'Choose...') ? '' : mainTransferModal.value;
 
         if (JSON.stringify(newData) !== JSON.stringify(data[index])) {
+            let changeHistory = '';
+            changeHistory += (newData.city !== data[index].city)?`City: ${data[index].city} => ${newData.city}<br>`:'';
+            changeHistory += (newData.country !== data[index].country)?`Country: ${data[index].country} => ${newData.country}<br>`:'';
+            changeHistory += (newData.budget !== data[index].budget)?`Budget: ${data[index].budget} => ${newData.budget}<br>`:'';
+            changeHistory += (newData.dateStart !== data[index].dateStart)?`Date start: ${data[index].dateStart} => ${newData.dateStart}<br>`:'';
+            changeHistory += (newData.dateEnd !== data[index].dateEnd)?`Date end: ${data[index].dateEnd} => ${newData.dateEnd}<br>`:'';
+            changeHistory += (newData.persons !== data[index].persons)? `Persons: ${data[index].persons} => ${newData.persons}<br>`:'';
+            changeHistory += (newData.mainTransfer !== data[index].mainTransfer)?`Transfer: ${data[index].mainTransfer} => ${newData.mainTransfer}<br>`:'';
+
+            date = `<hr><b>${date}</b>:<br> ${changeHistory}`;
             if (data[index].changeLog) {
                 newData.changeLog.push(date)
             } else {
