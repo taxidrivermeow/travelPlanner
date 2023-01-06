@@ -155,10 +155,8 @@
             changeLog = data.changeLog.map(function (value){
                 return `${value} <br>`;
             }).join('');
-            changeLog = '<hr' + changeLog;
-            //TODO
+            changeLog = '<hr>' + changeLog;
         }
-
 
         modalDetailsDiv.innerHTML = travelInfo+changeLog;
     }
