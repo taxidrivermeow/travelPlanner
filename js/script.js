@@ -44,6 +44,14 @@
         `;
     }
 
+    const itemsRender = () => {
+        const items = getDatabase().map(setItem);
+        historyItems.innerHTML = items.join('');
+        setDeleteButton();
+        setEditButton();
+        setDetailButton();
+    }
+
     const addRecord = (e) => {
         e.preventDefault();
         const data = getDatabase();
@@ -82,11 +90,11 @@
     const currentDate = () => {
         const currentDate = new Date();
         const year = currentDate.getFullYear()
-        const month = ((currentDate.getMonth() + 1) < 10)?'0' + (currentDate.getMonth() + 1):(currentDate.getMonth() + 1);
-        const date = (currentDate.getDate() < 10)?'0' + currentDate.getDate():currentDate.getDate();
-        const hours = (currentDate.getHours() < 10)?'0' + currentDate.getHours():currentDate.getHours();
-        const minutes = (currentDate.getMinutes() < 10)?'0' + currentDate.getMinutes():currentDate.getMinutes();
-        const seconds = (currentDate.getSeconds() < 10)?'0' + currentDate.getSeconds():currentDate.getSeconds();
+        const month = ((currentDate.getMonth() + 1) < 10) ? '0' + (currentDate.getMonth() + 1) : (currentDate.getMonth() + 1);
+        const date = (currentDate.getDate() < 10) ? '0' + currentDate.getDate() : currentDate.getDate();
+        const hours = (currentDate.getHours() < 10) ? '0' + currentDate.getHours() : currentDate.getHours();
+        const minutes = (currentDate.getMinutes() < 10) ? '0' + currentDate.getMinutes() : currentDate.getMinutes();
+        const seconds = (currentDate.getSeconds() < 10) ? '0' + currentDate.getSeconds() : currentDate.getSeconds();
         return `${year}-${month}-${date} ${hours}:${minutes}:${seconds}`;
     }
 
@@ -107,13 +115,13 @@
 
         if (JSON.stringify(newData) !== JSON.stringify(data[index])) {
             let changeHistory = '';
-            changeHistory += (newData.city !== data[index].city)?`City: ${data[index].city} => ${newData.city}<br>`:'';
-            changeHistory += (newData.country !== data[index].country)?`Country: ${data[index].country} => ${newData.country}<br>`:'';
-            changeHistory += (newData.budget !== data[index].budget)?`Budget: ${data[index].budget} => ${newData.budget}<br>`:'';
-            changeHistory += (newData.dateStart !== data[index].dateStart)?`Date start: ${data[index].dateStart} => ${newData.dateStart}<br>`:'';
-            changeHistory += (newData.dateEnd !== data[index].dateEnd)?`Date end: ${data[index].dateEnd} => ${newData.dateEnd}<br>`:'';
-            changeHistory += (newData.persons !== data[index].persons)? `Persons: ${data[index].persons} => ${newData.persons}<br>`:'';
-            changeHistory += (newData.mainTransfer !== data[index].mainTransfer)?`Transfer: ${data[index].mainTransfer} => ${newData.mainTransfer}<br>`:'';
+            changeHistory += (newData.city !== data[index].city) ? `City: ${data[index].city} => ${newData.city}<br>` : '';
+            changeHistory += (newData.country !== data[index].country) ? `Country: ${data[index].country} => ${newData.country}<br>` : '';
+            changeHistory += (newData.budget !== data[index].budget) ? `Budget: ${data[index].budget} => ${newData.budget}<br>` : '';
+            changeHistory += (newData.dateStart !== data[index].dateStart) ? `Date start: ${data[index].dateStart} => ${newData.dateStart}<br>` : '';
+            changeHistory += (newData.dateEnd !== data[index].dateEnd) ? `Date end: ${data[index].dateEnd} => ${newData.dateEnd}<br>` : '';
+            changeHistory += (newData.persons !== data[index].persons) ? `Persons: ${data[index].persons} => ${newData.persons}<br>` : '';
+            changeHistory += (newData.mainTransfer !== data[index].mainTransfer) ? `Transfer: ${data[index].mainTransfer} => ${newData.mainTransfer}<br>` : '';
 
             date = `<hr><b>${date}</b>:<br> ${changeHistory}`;
             if (data[index].changeLog) {
@@ -138,8 +146,8 @@
         budgetModal.value = data.budget;
         dateStartModal.value = data.dateStart;
         dateEndModal.value = data.dateEnd;
-        personsModal.value = (data.persons)?data.persons:'Choose...';
-        mainTransferModal.value = (data.mainTransfer)?data.mainTransfer:'Choose...';
+        personsModal.value = (data.persons) ? data.persons : 'Choose...';
+        mainTransferModal.value = (data.mainTransfer) ? data.mainTransfer : 'Choose...';
         editTravelForm.dataset.index = index;
     }
 
@@ -151,29 +159,29 @@
         const editButtons = document.querySelectorAll(".edit-btn");
         editButtons.forEach(addEditOnClickListener);
     }
-    
+
     const detailsElement = (e) => {
         const index = e.currentTarget.dataset.index;
         const data = getDatabase()[index];
         let changeLog = '';
         const travelInfo = `
-        Country: ${data.country}<br>
-        City: ${data.city}<br>
-        Expected budget: ${data.budget}<br>
-        Date start: ${data.dateStart}<br>
-        Date end: ${data.dateEnd}<br>
-        Persons: ${data.persons}<br>
-        Main transfer: ${data.mainTransfer}<br>
+        <b>Country:</b> ${data.country}<br>
+        <b>City:</b> ${data.city}<br>
+        <b>Expected budget:</b> ${data.budget}<br>
+        <b>Date start:</b> ${data.dateStart}<br>
+        <b>Date end:</b> ${data.dateEnd}<br>
+        <b>Persons:</b> ${data.persons}<br>
+        <b>Main transfer:</b> ${data.mainTransfer}<br>
         `;
 
         if (data.changeLog) {
-            changeLog = data.changeLog.map(function (value){
+            changeLog = data.changeLog.map(function (value) {
                 return `${value} <br>`;
             }).join('');
             changeLog = '<hr><h6>Changelog:</h6>' + changeLog;
         }
 
-        modalDetailsDiv.innerHTML = travelInfo+changeLog;
+        modalDetailsDiv.innerHTML = travelInfo + changeLog;
     }
 
     const addDetailsOnClickListener = (detailsButton) => {
@@ -183,14 +191,6 @@
     const setDetailButton = () => {
         const detailsButtons = document.querySelectorAll(".details-btn");
         detailsButtons.forEach(addDetailsOnClickListener);
-    }
-
-    const itemsRender = () => {
-        const items = getDatabase().map(setItem);
-        historyItems.innerHTML = items.join('');
-        setDeleteButton();
-        setEditButton();
-        setDetailButton();
     }
 
     const getDatabase = () => {
