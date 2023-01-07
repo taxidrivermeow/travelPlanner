@@ -78,3 +78,22 @@ h1 {
 .planned-travels .buttons a {
     margin: 0 3px;
 }
+
+@media (max-width: 780px) {
+    .container {
+        flex-direction: column;
+    }
+
+    .input-form, .planned-travels {
+        width: 100%;
+    }
+
+    .input-form {
+        position: relative;
+    }
+
+    .planned-travels {
+        margin: 25px 0 0 0;
+    }
+
+}
