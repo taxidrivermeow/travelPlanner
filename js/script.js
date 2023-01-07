@@ -1,4 +1,4 @@
-(function () {
+(() => {
     const city = document.getElementById('city');
     const country = document.getElementById('country');
     const budget = document.getElementById('budget');
@@ -20,8 +20,8 @@
     const editTravelForm = document.getElementById('edit-travel-form');
     const modalDetailsDiv = document.getElementById('modal-details');
 
-    const setItem = function (obj, index) {
-        const persons = (obj.persons == 1) ? 'person' : 'persons';
+    const setItem = (obj, index) => {
+        const persons = (Number(obj.persons) === 1) ? 'person' : 'persons';
         return `
         <div class="history-item">
             <div class="title">
@@ -44,8 +44,8 @@
         `;
     }
 
-    const addRecord = function (event) {
-        event.preventDefault();
+    const addRecord = (e) => {
+        e.preventDefault();
         const data = getDatabase();
         let newObj = {};
         newObj.city = city.value;
@@ -58,28 +58,28 @@
         data.unshift(newObj);
         setDatabase(data);
 
-        this.reset();
+        e.currentTarget.reset();
         itemsRender();
     }
 
-    function deleteElement() {
+    const deleteElement = (e) => {
         let data = getDatabase();
-        data.splice(Number(this.dataset.index), 1);
+        data.splice(Number(e.currentTarget.dataset.index), 1);
         setDatabase(data);
 
         itemsRender();
     }
 
-    const addDeleteOnClickListener = function (deleteButton) {
+    const addDeleteOnClickListener = (deleteButton) => {
         deleteButton.onclick = deleteElement;
     }
 
-    function setDeleteButton() {
+    const setDeleteButton = () => {
         const deleteButtons = document.querySelectorAll(".delete-btn");
         deleteButtons.forEach(addDeleteOnClickListener);
     }
 
-    function currentDate() {
+    const currentDate = () => {
         const currentDate = new Date();
         const year = currentDate.getFullYear()
         const month = ((currentDate.getMonth() + 1) < 10)?'0' + (currentDate.getMonth() + 1):(currentDate.getMonth() + 1);
@@ -90,8 +90,8 @@
         return `${year}-${month}-${date} ${hours}:${minutes}:${seconds}`;
     }
 
-    function saveChanges(event) {
-        event.preventDefault();
+    const saveChanges = (e) => {
+        e.preventDefault();
         const index = editTravelForm.dataset.index;
         const data = getDatabase();
         let date = currentDate();
@@ -129,8 +129,8 @@
         $('#travelModalLong').modal('hide');
     }
 
-    function editElement() {
-        const index = this.dataset.index;
+    const editElement = (e) => {
+        const index = e.currentTarget.dataset.index;
         const data = getDatabase()[index];
 
         cityModal.value = data.city;
@@ -143,17 +143,17 @@
         editTravelForm.dataset.index = index;
     }
 
-    const addEditOnClickListener = function (editButton) {
+    const addEditOnClickListener = (editButton) => {
         editButton.onclick = editElement;
     }
 
-    function setEditButton() {
+    const setEditButton = () => {
         const editButtons = document.querySelectorAll(".edit-btn");
         editButtons.forEach(addEditOnClickListener);
     }
     
-    function detailsElement() {
-        const index = this.dataset.index;
+    const detailsElement = (e) => {
+        const index = e.currentTarget.dataset.index;
         const data = getDatabase()[index];
         let changeLog = '';
         const travelInfo = `
@@ -176,16 +176,16 @@
         modalDetailsDiv.innerHTML = travelInfo+changeLog;
     }
 
-    const addDetailsOnClickListener = function (detailsButton) {
+    const addDetailsOnClickListener = (detailsButton) => {
         detailsButton.onclick = detailsElement;
     }
 
-    function setDetailButton() {
+    const setDetailButton = () => {
         const detailsButtons = document.querySelectorAll(".details-btn");
         detailsButtons.forEach(addDetailsOnClickListener);
     }
 
-    function itemsRender() {
+    const itemsRender = () => {
         const items = getDatabase().map(setItem);
         historyItems.innerHTML = items.join('');
         setDeleteButton();
@@ -193,15 +193,15 @@
         setDetailButton();
     }
 
-    function getDatabase() {
+    const getDatabase = () => {
         return (localStorage.getItem('travels')) ? JSON.parse(localStorage.getItem('travels')) : [];
     }
 
-    function setDatabase(data) {
+    const setDatabase = (data) => {
         localStorage.setItem("travels", JSON.stringify(data));
     }
 
-    function clearDatabase() {
+    const clearDatabase = () => {
         localStorage.setItem("travels", "");
         itemsRender();
     }
