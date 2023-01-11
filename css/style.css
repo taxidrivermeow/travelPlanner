@@ -62,9 +62,30 @@ h1 {
     margin: 20px 0;
 }
 
+.planned-travels .sort,
 .planned-travels .title {
     display: flex;
     flex-direction: row;
+}
+
+.planned-travels .sort .sort-title {
+    flex: 3;
+}
+
+.planned-travels .sort .sort-options {
+    flex: 5;
+}
+
+.planned-travels .sort .sort-options select {
+    width: 80%;
+}
+
+.planned-travels .sort .sort-direction {
+    flex: 1;
+}
+
+.planned-travels .sort .sort-direction i {
+    cursor: pointer;
 }
 
 .planned-travels .cities {
@@ -77,6 +98,11 @@ h1 {
 
 .planned-travels .buttons a {
     margin: 0 3px;
+    color: black;
+}
+
+.planned-travels .sort {
+
 }
 
 @media (max-width: 780px) {

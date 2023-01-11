@@ -6,9 +6,6 @@
     const dateEnd = document.getElementById('date-end');
     const persons = document.getElementById('persons');
     const mainTransfer = document.getElementById('main-transfer');
-    const historyItems = document.getElementById('items');
-    const travelForm = document.getElementById('travel-form');
-    const clearData = document.getElementById('clear-data');
 
     const cityModal = document.getElementById('modal-city');
     const countryModal = document.getElementById('modal-country');
@@ -17,8 +14,14 @@
     const dateEndModal = document.getElementById('modal-date-end');
     const personsModal = document.getElementById('modal-persons');
     const mainTransferModal = document.getElementById('modal-main-transfer');
+
+    const travelForm = document.getElementById('travel-form');
     const editTravelForm = document.getElementById('edit-travel-form');
+    const historyItems = document.getElementById('items');
     const modalDetailsDiv = document.getElementById('modal-details');
+    const sortType = document.getElementById('sort_type');
+    const sortDirection = document.getElementById('sort_direction');
+    const clearData = document.getElementById('clear-data');
 
     const setItem = (obj, index) => {
         const persons = (Number(obj.persons) === 1) ? 'person' : 'persons';
@@ -29,9 +32,9 @@
                     <h4>From Haifa to ${obj.city}/${obj.country}</h4>
                 </div>
                 <div class="buttons">
-                    <a href="#" class="edit-btn" data-index="${index}" data-toggle="modal" data-target="#travelModalLong" title="Edit"><img src="images/pencil-square.svg" alt="Edit"></a>
-                    <a href="#" class="delete-btn" data-index="${index}" title="Delete"><img src="images/x-circle.svg" alt="Delete"></a>
-                    <a href="#" class="details-btn" data-index="${index}" data-toggle="modal" data-target="#detailsModal" title="Details"><img src="images/three-dots-vertical.svg" alt="Details"></a>
+                    <a href="#" class="edit-btn" data-index="${index}" data-toggle="modal" data-target="#travelModalLong" title="Edit"><i class="bi bi-pencil-square"></i></a>
+                    <a href="#" class="delete-btn" data-index="${index}" title="Delete"><i class="bi bi-x-circle"></i></a>
+                    <a href="#" class="details-btn" data-index="${index}" data-toggle="modal" data-target="#detailsModal" title="Details"><i class="bi bi-three-dots-vertical"></i></a>
                 </div>
             </div>
             <div class="expected-budget">
@@ -63,6 +66,7 @@
         newObj.dateEnd = dateEnd.value;
         newObj.persons = (persons.value === 'Choose...') ? '' : persons.value;
         newObj.mainTransfer = (mainTransfer.value === 'Choose...') ? '' : mainTransfer.value;
+        newObj.addDate = Date.now();
         data.unshift(newObj);
         setDatabase(data);
 
@@ -79,7 +83,7 @@
     }
 
     const addDeleteOnClickListener = (deleteButton) => {
-        deleteButton.onclick = deleteElement;
+        deleteButton.addEventListener('click', deleteElement);
     }
 
     const setDeleteButton = () => {
@@ -152,7 +156,7 @@
     }
 
     const addEditOnClickListener = (editButton) => {
-        editButton.onclick = editElement;
+        editButton.addEventListener('click', editElement);
     }
 
     const setEditButton = () => {
@@ -185,12 +189,49 @@
     }
 
     const addDetailsOnClickListener = (detailsButton) => {
-        detailsButton.onclick = detailsElement;
+        detailsButton.addEventListener('click', detailsElement);
     }
 
     const setDetailButton = () => {
         const detailsButtons = document.querySelectorAll(".details-btn");
         detailsButtons.forEach(addDetailsOnClickListener);
+    }
+
+    const sortDatabase = () => {
+        const data = getDatabase();
+        const sortBy = sortType.value;
+        let direction = 'DESC';
+        let sortParam;
+        let sortedData;
+
+        if (sortBy === 'budget') {
+            sortParam = 'budget';
+        } else if (sortBy === 'date') {
+            sortParam = 'dateStart';
+        } else if (sortBy === 'persons') {
+            sortParam = 'persons';
+        } else {
+            sortParam = 'addDate';
+        }
+        direction = (sortDirection.classList.contains('bi-sort-up'))?'ASC':'DESC';
+
+        sortedData = data.sort((a, b) => {
+            let compareRes;
+            if (sortParam === 'dateStart') {
+                compareRes = (direction === 'ASC')? Date.parse(a[sortParam]) - Date.parse(b[sortParam]) : Date.parse(b[sortParam]) - Date.parse(a[sortParam]);
+            } else {
+                compareRes = (direction === 'ASC')? a[sortParam] - b[sortParam] : b[sortParam] - a[sortParam];
+            }
+            return compareRes;
+        });
+        setDatabase(sortedData);
+        itemsRender();
+    }
+
+    const changeSortDirection = () => {
+        sortDirection.classList.toggle("bi-sort-up");
+        sortDirection.classList.toggle("bi-sort-down");
+        sortDatabase();
     }
 
     const getDatabase = () => {
@@ -206,8 +247,10 @@
         itemsRender();
     }
 
-    travelForm.onsubmit = addRecord;
-    editTravelForm.onsubmit = saveChanges;
-    clearData.onclick = clearDatabase;
+    travelForm.addEventListener('submit', addRecord);
+    editTravelForm.addEventListener('submit', saveChanges);
+    sortType.addEventListener('change', sortDatabase);
+    sortDirection.addEventListener('click', changeSortDirection);
+    clearData.addEventListener('click', clearDatabase);
     itemsRender();
 })()
